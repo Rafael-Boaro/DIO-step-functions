@@ -1,0 +1,79 @@
+{
+  "Comment": "Assistente de delivery simples - v2",
+  "StartAt": "ReceberPedido",
+  "States": {
+    "ReceberPedido": {
+      "Type": "Pass",
+      "Result": {
+        "cliente": "Rafael",
+        "item": "Pizza",
+        "enderecoValido": true,
+        "itemDisponivel": true
+      },
+      "ResultPath": "$.pedido",
+      "Next": "ValidarPedido"
+    },
+    "ValidarPedido": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.pedido.enderecoValido",
+          "BooleanEquals": false,
+          "Next": "EnderecoInvalido"
+        },
+        {
+          "Variable": "$.pedido.itemDisponivel",
+          "BooleanEquals": false,
+          "Next": "ItemIndisponivel"
+        }
+      ],
+      "Default": "ProcessarPedido"
+    },
+    "ProcessarPedido": {
+      "Type": "Parallel",
+      "ResultPath": "$.processamento",
+      "Branches": [
+        {
+          "StartAt": "PrepararPedido",
+          "States": {
+            "PrepararPedido": {
+              "Type": "Wait",
+              "Seconds": 5,
+              "End": true
+            }
+          }
+        },
+        {
+          "StartAt": "NotificarCliente",
+          "States": {
+            "NotificarCliente": {
+              "Type": "Pass",
+              "Result": "Pedido confirmado! Estamos preparando.",
+              "End": true
+            }
+          }
+        }
+      ],
+      "Next": "SaiuParaEntrega"
+    },
+    "SaiuParaEntrega": {
+      "Type": "Pass",
+      "Result": "Saiu para entrega",
+      "ResultPath": "$.status",
+      "Next": "PedidoEntregue"
+    },
+    "PedidoEntregue": {
+      "Type": "Succeed"
+    },
+    "EnderecoInvalido": {
+      "Type": "Fail",
+      "Error": "EnderecoInvalido",
+      "Cause": "O endereço informado não é válido"
+    },
+    "ItemIndisponivel": {
+      "Type": "Fail",
+      "Error": "ItemIndisponivel",
+      "Cause": "O item escolhido está indisponível"
+    }
+  }
+}
