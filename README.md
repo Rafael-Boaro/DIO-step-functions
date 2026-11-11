@@ -152,12 +152,6 @@ Resultado esperado: Transicao para o estado de erro `ItemIndisponivel` com falha
 - **Tipo Parallel:** Utilizacao de processamento paralelo para desacoplar tarefas assincronas (preparo do pedido e envio de confirmacao ao cliente), reduzindo o tempo total de resposta.
 - **Estados Choice e Fail:** Implementacao de controle de fluxo defensivo, garantindo que inconsistencias no pedido sejam tratadas antes de consumir recursos computacionais de processamento.
 
-## Roadmap
-
-- [ ] Integrar AWS Lambda functions para validar dados em banco de dados real.
-- [ ] Integrar Amazon SNS para envio de SMS/e-mail real na etapa NotificarCliente.
-- [ ] Persistir o historico e status do pedido em tabela do Amazon DynamoDB.
-
 ## Autor
 
 Rafael Paolielo Boaro  
